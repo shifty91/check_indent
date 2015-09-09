@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-# Time-stamp: <2015-09-09 15:42:09 kurt>
+# Time-stamp: <2015-09-09 15:55:02 kurt>
 #
 # Perl script for checking indent of source files.
 #
@@ -30,7 +30,6 @@
 #
 #
 
-use 5;
 use strict;
 use warnings;
 use Getopt::Long;
@@ -84,11 +83,19 @@ sub get_args
 
 sub add_error
 {
-	my ($file, $line, $line_number, $t_or_s) = @_;
+	my ($file, $line, $line_number, $error) = @_;
 	my ($err_str);
 
 	chomp $line;
-	$err_str = "[$file]:$line_number $t_or_s used: $line\n";
+	if ($error eq "tabs") {
+		$err_str = "[$file]:$line_number tabs used instead of spaces: $line\n";
+	} elsif ($error eq "spaces") {
+		$err_str = "[$file]:$line_number spaces used instead of tabs: $line\n";
+	} elsif ($error eq "trailing") {
+		$err_str = "[$file]:$line_number trailing whitespaces found: $line\n";
+	} else {
+		die "Unknown error source.";
+	}
 
 	push(@errors, $err_str) if ($verbose);
 
@@ -105,6 +112,7 @@ sub check_indent
 	$cnt   = 1;
 	$error = 0;
 	while ($line = <$fh>) {
+		# tabs vs. spaces
 		if ($use_tabs) {
 			if ($line =~ /^[ ]+/) {
 				add_error($file, $line, $cnt, "spaces");
@@ -117,6 +125,11 @@ sub check_indent
 			}
 		} else {
 			die "This should never happen.";
+		}
+		# trailing whitespaces
+		if ($line =~ /[ \t]+$/) {
+			add_error($file, $line, $cnt, "trailing");
+			$error = 1;
 		}
 		++$cnt;
 	}
