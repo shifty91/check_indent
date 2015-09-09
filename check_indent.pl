@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-# Time-stamp: <2015-09-09 15:55:02 kurt>
+# Time-stamp: <2015-09-09 16:05:00 kurt>
 #
 # Perl script for checking indent of source files.
 #
@@ -51,7 +51,6 @@ usage: $0 <options> -- <files|directories>
 
 options:
     -v, --verbose          : verbose output
-    -r, --recursive        : going recursive in directories
     -t, --tabs             : tabs should be used for indention -> finds lines indented with spaces
     -s, --spaces           : spaces should be used for indention -> finds lines indented with tabs
     -c, --check            : checks whether mixed indention is used
@@ -65,7 +64,6 @@ EOF
 sub get_args
 {
 	GetOptions("verbose"   => \$verbose,
-			   "recursive" => \$recursive,
 			   "tabs"      => \$use_tabs,
 			   "spaces"    => \$use_spaces,
 			   "check"     => \$check) || print_usage_and_exit();
