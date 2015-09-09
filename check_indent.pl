@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-# Time-stamp: <2015-09-09 16:05:00 kurt>
+# Time-stamp: <2015-09-09 18:58:08 kurt>
 #
 # Perl script for checking indent of source files.
 #
@@ -36,7 +36,7 @@ use Getopt::Long;
 use Term::ANSIColor qw(:constants);
 
 # arguments
-my ($recursive, $use_tabs, $use_spaces, $check, @files, $verbose);
+my ($use_tabs, $use_spaces, $check, @files, $verbose);
 
 # internal stuff
 my (@errors);
